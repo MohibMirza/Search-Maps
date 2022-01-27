@@ -1,26 +1,51 @@
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Scanner;
 
 public class SearchMap {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         if(args.length < 2) {
             System.out.println("Too few args!");
             return;
         }
 
-        Map<Character, String> incoming = new HashMap<>();
-        Map<Character, String> outgoing = new HashMap<>();
+        String inputFilename = args[0];
+        String outputFilename = args[1];
 
-        Map<String, Integer> price = new HashMap<>();
-
-        Map<String, String> route = new HashMap<>();
+        // String inputFilename = "input.txt";
 
 
-
+        FlightMap map = parseFile(inputFilename);
 
 
 
+    }
+
+    public static FlightMap parseFile(String filename) throws IOException {
+
+        File file = new File(filename);
+        Scanner inputFile = new Scanner(file);
+
+        char origin = inputFile.nextLine().charAt(0);
+        FlightMap fmap = new FlightMap(origin);
+
+        while(inputFile.hasNext()) {
+            String line = inputFile.nextLine();
+
+            char source = line.charAt(0);
+            char destination = line.charAt(2);
+            String edge = Character.toString(source) + Character.toString(destination);
+
+            int price = Integer.valueOf(line.substring(5));
+
+            fmap.addForwardEdge(edge, price);
+
+        }
+
+        return fmap;
     }
 
 
