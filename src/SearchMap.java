@@ -22,11 +22,12 @@ public class SearchMap {
 
         System.out.println(map.toString());
 
-        System.out.println("Connected to Origin: " + map.connectedToOrigin.size());
+        System.out.println("P->Q: " + map.isReachable('P', 'Q'));
+        System.out.println("P->X: " + map.isReachable('P', 'X'));
 
-        for (Character character : map.connectedToOrigin) {
-            System.out.println( character );
-        }
+        System.out.println(map.findPath('P', 'X'));
+        System.out.println(map.calculateCost(map.findPath('P', 'X')));
+
     }
 
     public static FlightMap parseFile(String filename) throws IOException {
