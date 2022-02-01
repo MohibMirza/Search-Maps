@@ -1,26 +1,75 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <project name="Search Maps" default="compile" basedir=".">
-
     <description>
-        A sample build file for this project
+        Build file for Search Maps
     </description>
 
     <property name="source.dir" location="src"/>
     <property name="build.dir" location="bin"/>
     <property name="doc.dir" location="doc"/>
+    <property name="dist.dir" location="dist"/>
+    <property name="lib.dir" location="lib"/>
+
+    <path id="build.classpath">
+        <fileset dir="${lib.dir}">
+            <include name="**/*.jar"/>
+        </fileset>
+    </path>
+
+    <path id="run.classpath">
+        <pathelement location="{$build.dir}"/>
+    </path>
+
+    <path id="application" location="${dist.dir}/SearchMaps.jar"/>
 
     <target name="init" description="setup project directories">
-        <mkdir="${build.dir}"></mkdir>
+        <mkdir dir="${doc.dir}"></mkdir>
+        <mkdir dir="${build.dir}"></mkdir>
+        <mkdir dir="${dist.dir}"></mkdir>
     </target>
 
     <target name="compile" depends="init" description="compile java sources">
+        <javac srcdir="${source.dir}" destdir="${build.dir}" classpathref="build.classpath"></javac>
+    </target>
+
+    <target name="dist" depends="compile">
+        <jar destfile="${dist.dir}/SearchMaps.jar" basedir="${build.dir}">
+            <manifest>
+                <attribute name="Main-Class" value="SearchMap"/>
+            </manifest>
+        </jar>
     </target>
 
     <target name="doc" depends="init" description="generate documentation">
+        <javadoc sourcefiles="${source.dir}/FlightMap.java,${source.dir}/SearchMap.java" destdir="${doc.dir}"/>
     </target>
 
-    <target name="clean" description="tidy up workspace">
+    <target name="clean" depends="init" description="delete directories">
+        <delete dir="${build.dir}"/>
+        <delete dir="${doc.dir}"/>
+        <delete dir="${dist.dir}"/>
+        <delete>
+            <fileset defaultexcludes="no" dir="${source.dir}" includes="**/*~"/>
+        </delete>
     </target>
+
+    <target name="test" depends="compile,dist" description="run junit tests">
+        <junit printsummary="yes" haltonfailure="no">
+            <classpath refid="build.classpath"/>
+            <classpath refid="application"/>
+            <formatter type="xml"/>
+            <formatter type="plain"/>
+            <batchtest fork="yes" todir=".">
+                <fileset dir="${source.dir}">
+                    <include name="**/*JUnit*.java"/>
+                </fileset>
+            </batchtest>
+        </junit>
+    </target>
+
+
+
+
 
 </project>
+

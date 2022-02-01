@@ -1,29 +1,19 @@
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import java.io.IOException;
 
-public class FlightMapJUnit1 {
-    private FlightMap flightMap;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
-    @Before
-    public void setup() {
-        flightMap = new FlightMap('P');
-        flightMap.addForwardEdge("PW", 200);
-        flightMap.addForwardEdge("PR", 300);
-        flightMap.addForwardEdge("RX", 200);
-        flightMap.addForwardEdge("QX", 375);
-        flightMap.addForwardEdge("WS", 250);
-        flightMap.addForwardEdge("ST", 300);
-        flightMap.addForwardEdge("TW", 350);
-        flightMap.addForwardEdge("WY", 500);
-        flightMap.addForwardEdge("YZ", 450);
-        flightMap.addForwardEdge("YR", 600);
-    }
+public class SearchMapJUnit1 {
+    FlightMap flightMap;
 
     @Test
-    public void calculateCostTest() {
-        // neighbouring routes cost test
+    public void testParseFile() throws IOException {
+        flightMap = SearchMap.parseFile("input.txt");
+
+        // all these test methods are to make
         assertEquals(flightMap.calculateCost("PW"), 200);
         assertEquals(flightMap.calculateCost("PR"), 300);
         assertEquals(flightMap.calculateCost("RX"), 200);
@@ -35,14 +25,8 @@ public class FlightMapJUnit1 {
         assertEquals(flightMap.calculateCost("PWY"), 700);
         assertEquals(flightMap.calculateCost("PWYZ"), 1150);
         assertEquals(flightMap.calculateCost("PWYRX"), 1500);
-
-        // cycle thru loop test
         assertEquals(flightMap.calculateCost("PWSTWST"), 1650);
 
-    }
-
-    @Test
-    public void findPathTest() {
         String PW = flightMap.findPath('W');
         assertTrue(PW.compareTo("PW") == 0);
 
@@ -54,10 +38,8 @@ public class FlightMapJUnit1 {
 
         String PT = flightMap.findPath('T');
         assertTrue(PT.compareTo("PWST") == 0);
-    }
 
-    @Test
-    public void isReachableTest() {
+
         assertEquals(flightMap.isReachable('Q'), false);
         assertEquals(flightMap.isReachable('S'), true);
         assertEquals(flightMap.isReachable('T'), true);
@@ -70,11 +52,6 @@ public class FlightMapJUnit1 {
         assertEquals(flightMap.isReachable('S'), true);
         assertEquals(flightMap.isReachable('B'), false);
 
-    }
-
-    @Test
-    public void reachableNodesTest() {
-        // System.out.println(flightMap.reachableNodes().size());
         flightMap.addForwardEdge("PO", 200);
         flightMap.addForwardEdge("PA", 200);
         flightMap.addForwardEdge("P1", 200);
@@ -88,7 +65,7 @@ public class FlightMapJUnit1 {
         flightMap.addForwardEdge("89", 200);
         flightMap.addForwardEdge("9L", 200);
 
-        assertEquals(flightMap.reachableNodes().size(), 19);
+        assertEquals(flightMap.reachableNodes().size(), 21);
     }
 
 

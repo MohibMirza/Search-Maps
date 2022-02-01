@@ -1,32 +1,23 @@
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import java.io.PrintWriter;
 import java.util.Scanner;
 
 public class SearchMap {
 
     public static void main(String[] args) throws IOException {
-//        if(args.length < 2) {
-//            System.out.println("Too few args!");
-//            return;
-//        }
+        if(args.length < 2) {
+            System.out.println("Too few args!");
+            return;
+        }
 
-//        String inputFilename = args[0];
-//        String outputFilename = args[1];
-
-         String inputFilename = "input.txt";
-
+        String inputFilename = args[0];
+        String outputFilename = args[1];
 
         FlightMap map = parseFile(inputFilename);
+        generateOutputFile(map,outputFilename);
 
-        System.out.println(map.toString());
-
-        System.out.println("P->Q: " + map.isReachable('P', 'Q'));
-        System.out.println("P->X: " + map.isReachable('P', 'X'));
-
-        System.out.println(map.findPath('P', 'X'));
-        System.out.println(map.calculateCost(map.findPath('P', 'X')));
 
     }
 
@@ -54,6 +45,14 @@ public class SearchMap {
         return fmap;
     }
 
+    private static void generateOutputFile(FlightMap flightmap, String filename) {
+        String output = flightmap.toString();
+        try (PrintWriter out = new PrintWriter(filename)){
+            out.println(output);
+        }catch(FileNotFoundException e) {
+            System.out.println("ERROR: Was not able to generate output file!");
+        }
 
+    }
 
 }

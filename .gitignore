@@ -2,3 +2,10 @@
 *.txt
 out
 Search Maps.iml
+bin
+doc
+dist
+TEST-FlightMapJUnit1.txt
+TEST-SearchMapJUnit1.txt
+TEST-SearchMapJUnit1.xml
+TEST-FlightMapJUnit1.xml
